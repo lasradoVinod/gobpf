@@ -387,6 +387,11 @@ func (bpf *Module) AttachUprobe(name, symbol string, fd, pid int) error {
 	return bpf.attachUProbe(evName, BPF_PROBE_ENTRY, path, addr, fd, pid)
 }
 
+func (bpf *Module) AttachUprobeWithOffset(path string, addr uint64, fd, pid int) error {
+	evName := fmt.Sprintf("p_%s_0x%x", uprobeRegexp.ReplaceAllString(path, "_"), addr)
+	return bpf.attachUProbe(evName, BPF_PROBE_ENTRY, path, addr, fd, pid)
+}
+
 // AttachMatchingUprobes attaches a uprobe fd to all symbols in the library or binary
 // 'name' that match a given pattern.
 // The 'name' argument can be given as either a full library path (/usr/lib/..),
